@@ -16,6 +16,7 @@ public class ServoTest1 extends LinearOpMode {
     private DcMotor front_right;
     private DcMotor back_left;
     private DcMotor back_right;
+    private DcMotor lift_motor;
     private Servo servo1;
 
     @Override
@@ -26,6 +27,7 @@ public class ServoTest1 extends LinearOpMode {
         back_left = hardwareMap.get(DcMotor.class,"back_left" );
         back_right = hardwareMap.get(DcMotor.class, "back_right");
         servo1 = hardwareMap.get(Servo.class, "servo1");
+        lift_motor = hardwareMap.get(DcMotor.class, "lift_motor");
 
 
 
@@ -37,6 +39,10 @@ public class ServoTest1 extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
+        int low_jun = 0;
+        int med_jun = 0;
+        int high_jun = 0;
+
 
         waitForStart();
 
@@ -55,13 +61,19 @@ public class ServoTest1 extends LinearOpMode {
             back_left.setPower(y-x+x2);
 
             // move arm down on A button if not already at lowest position.
-            if (gamepad1.a && servo_position > MIN_POSITION) servo_position -= .01;
+            if (gamepad1.right_trigger > 0.3 && servo_position > MIN_POSITION) servo_position -= .01;
 
             // move arm up on B button if not already at the highest position.
-            if (gamepad1.b && servo_position < MAX_POSITION) servo_position += .01;
+            if (gamepad1.left_trigger > 0.3 && servo_position < MAX_POSITION) servo_position += .01;
 
             // set the servo position/power values as we have computed them.
             servo1.setPosition(Range.clip(servo_position, MIN_POSITION, MAX_POSITION));
+            if (gamepad1.a) lift_motor.setTargetPosition(low_jun);
+            if (gamepad1.b) lift_motor.setTargetPosition(med_jun);
+            if (gamepad1.y) lift_motor.setTargetPosition(high_jun);
+            if (gamepad1.x) lift_motor.setTargetPosition(0);
+            //sets the lift motor to the heights of the junctions
+
 
 
 
