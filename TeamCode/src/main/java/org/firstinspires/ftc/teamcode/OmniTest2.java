@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp
 
-public class OmniTest extends LinearOpMode {
+public class OmniTest2 extends LinearOpMode {
     private Blinker control_Hub;
     private DcMotor front_left;
     private DcMotor front_right;
