@@ -72,28 +72,28 @@ public class Auto_Mode extends LinearOpMode {
 
 
     }
-    private void forward(float rotations){
+    private void forward(float distance){
         //loop x # of rotations
         front_right.setPower(0.5);
         front_left.setPower(0.5);
         back_right.setPower(0.5);
         back_left.setPower(0.5);
     }
-    private void right(float rotations){
+    private void right(float distance){
         //loop x # of rotations
         front_right.setPower(-0.5);
         front_left.setPower(0.5);
         back_right.setPower(0.5);
         back_left.setPower(-0.5);
     }
-    private void left(float rotations){
+    private void left(float distance){
         //loop x # of rotations
         front_right.setPower(0.5);
         front_left.setPower(-0.5);
         back_right.setPower(-0.5);
         back_left.setPower(0.5);
     }
-    private void backwards(float rotations){
+    private void backwards(float distance){
         //loop x # of rotations
         front_right.setPower(-0.5);
         front_left.setPower(-0.5);
