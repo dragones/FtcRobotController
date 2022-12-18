@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.util.Range;
 
 @TeleOp
 
-public class Auto_Mode extends LinearOpMode {
+public class auto_left extends LinearOpMode {
     private Blinker control_Hub;
     private DcMotor front_left;
     private DcMotor front_right;
@@ -59,7 +59,7 @@ public class Auto_Mode extends LinearOpMode {
             //move to correct zone
             forward(2509);
             //raise arm to high junction
-            pivot_left (encoder_tick);
+            pivot_right (encoder_tick);
             //drop cone
 
 

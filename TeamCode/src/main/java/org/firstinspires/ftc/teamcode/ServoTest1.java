@@ -54,11 +54,13 @@ public class ServoTest1 extends LinearOpMode {
             double x =  this.gamepad1.left_stick_x;
             double y = - this.gamepad1.left_stick_y;
             double x2 = this.gamepad1.right_stick_x;
+            double cap = 0.7;
 
-            front_right.setPower(y-x-x2);
-            front_left.setPower(y+x+x2);
-            back_right.setPower(y+x-x2);
-            back_left.setPower(y-x+x2);
+            // TODO: How to set power so have more fine grained control?
+            front_right.setPower((y-x-x2)*cap);
+            front_left.setPower((y+x+x2)*cap);
+            back_right.setPower((y+x-x2)*cap);
+            back_left.setPower((y-x+x2)*cap);
 
             // move arm down on A button if not already at lowest position.
             if (gamepad1.right_trigger > 0.3 && servo_position > MIN_POSITION) servo_position -= .01;
@@ -68,10 +70,22 @@ public class ServoTest1 extends LinearOpMode {
 
             // set the servo position/power values as we have computed them.
             servo1.setPosition(Range.clip(servo_position, MIN_POSITION, MAX_POSITION));
-            if (gamepad1.a) lift_motor.setTargetPosition(low_jun);
-            if (gamepad1.b) lift_motor.setTargetPosition(med_jun);
-            if (gamepad1.y) lift_motor.setTargetPosition(high_jun);
-            if (gamepad1.x) lift_motor.setTargetPosition(0);
+            //if (gamepad1.a) lift_motor.setTargetPosition(low_jun);
+            //if (gamepad1.b) lift_motor.setTargetPosition(med_jun);
+            //if (gamepad1.y) lift_motor.setTargetPosition(high_jun);
+            //if (gamepad1.x) lift_motor.setTargetPosition(0);
+            if (gamepad2.dpad_up) {
+                lift_motor.setPower(0.3);
+
+            }
+            else if (gamepad2.dpad_down) {
+                lift_motor.setPower(-0.3);
+
+            }
+            else
+            {
+                lift_motor.setPower(0);
+            }
             //sets the lift motor to the heights of the junctions
 
 
