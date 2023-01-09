@@ -19,6 +19,8 @@ public class ServoTest1 extends LinearOpMode {
     private DcMotor lift_motor;
     private Servo servo1;
 
+
+
     @Override
     public void runOpMode() {
         control_Hub = hardwareMap.get(Blinker.class, "Control Hub");
@@ -39,9 +41,9 @@ public class ServoTest1 extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
         // Wait for the game to start (driver presses PLAY)
-        int low_jun = 0;
-        int med_jun = 0;
-        int high_jun = 0;
+        int low_jun = -200;
+        int med_jun = -3200;
+        int high_jun = -4400;
 
 
         waitForStart();
@@ -50,11 +52,11 @@ public class ServoTest1 extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
+            double negative = 1;
             double x =  this.gamepad1.left_stick_x;
             double y = - this.gamepad1.left_stick_y;
             double x2 = this.gamepad1.right_stick_x;
-            double cap = 0.7;
+            double cap = 0.25;
 
             // TODO: How to set power so have more fine grained control?
             front_right.setPower((y-x-x2)*cap);
@@ -63,29 +65,57 @@ public class ServoTest1 extends LinearOpMode {
             back_left.setPower((y-x+x2)*cap);
 
             // move arm down on A button if not already at lowest position.
-            if (gamepad1.right_trigger > 0.3 && servo_position > MIN_POSITION) servo_position -= .01;
+            if (gamepad1.right_trigger > 0.3 && servo_position > MIN_POSITION) servo_position -= .001;
 
             // move arm up on B button if not already at the highest position.
-            if (gamepad1.left_trigger > 0.3 && servo_position < MAX_POSITION) servo_position += .01;
+            if (gamepad1.left_trigger > 0.3 && servo_position < MAX_POSITION) servo_position += .001;
 
             // set the servo position/power values as we have computed them.
             servo1.setPosition(Range.clip(servo_position, MIN_POSITION, MAX_POSITION));
-            //if (gamepad1.a) lift_motor.setTargetPosition(low_jun);
-            //if (gamepad1.b) lift_motor.setTargetPosition(med_jun);
-            //if (gamepad1.y) lift_motor.setTargetPosition(high_jun);
-            //if (gamepad1.x) lift_motor.setTargetPosition(0);
-            if (gamepad2.dpad_up) {
-                lift_motor.setPower(0.3);
+            if (gamepad1.a) {
+                negative = 1;
+
+                lift_motor.setTargetPosition(low_jun);
+                lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            if (gamepad1.b) {
+                negative = 1;
+
+                lift_motor.setTargetPosition(med_jun);
+                lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            if (gamepad1.y) {
+                negative = 1;
+
+                lift_motor.setTargetPosition(high_jun);
+                lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+            if(gamepad1.x)
+            {
+                negative = 1;
+
+                lift_motor.setTargetPosition(0);
+                lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+
+
+
+            if (gamepad1.dpad_up) {
+                lift_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+                negative = -1;
 
             }
-            else if (gamepad2.dpad_down) {
-                lift_motor.setPower(-0.3);
+            else if (gamepad1.dpad_down) {
+                lift_motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+               negative = 1;
 
             }
             else
             {
                 lift_motor.setPower(0);
+
             }
+            lift_motor.setPower(0.5 * negative);
             //sets the lift motor to the heights of the junctions
 
 

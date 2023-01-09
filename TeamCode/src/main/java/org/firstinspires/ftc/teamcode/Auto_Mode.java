@@ -81,6 +81,8 @@ public class Auto_Mode extends LinearOpMode {
         front_left.setTargetPosition(-distance);
         back_right.setTargetPosition(distance);
         back_left.setTargetPosition(-distance);
+
+
     }
     private void pivot_left(int distance){
         front_right.setTargetPosition(-distance);
@@ -108,6 +110,7 @@ public class Auto_Mode extends LinearOpMode {
         front_left.setTargetPosition(-distance);
         back_right.setTargetPosition(-distance);
         back_left.setTargetPosition(distance);
+
     }
     private void backwards(int distance){
         //loop x # of rotations
