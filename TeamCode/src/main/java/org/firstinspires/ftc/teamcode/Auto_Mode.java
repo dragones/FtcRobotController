@@ -18,6 +18,17 @@ public class Auto_Mode extends LinearOpMode {
     private DcMotor back_right;
     private DcMotor lift_motor;
     private Servo servo1;
+    private static final int LEFT = 1;
+    private static final int RIGHT = 2;
+    private static final int FORWARD = 3;
+    private static final int BACKWARDS = 4;
+    private static final int HIGH_JUNCTION = 5;
+    private static final double TICKSPERCENTIMETER = 538/30.159;
+    private static final double SQUAREWIDTH = 60.0;
+
+
+
+
 
     @Override
     public void runOpMode() {
@@ -52,16 +63,31 @@ public class Auto_Mode extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            int coneNumber = 1;
 
-            //Move cone to high junction
-            //move to numbered cone
             //scan cone number
-            //move to correct zone
+            //Move cone to high junction
             forward(2509);
             //raise arm to high junction
+            raiseArm(HIGH_JUNCTION);
+            //move to numbered cone
+            //turn towards junction
             pivot_left (encoder_tick);
             //drop cone
+            //move to correct zone
+            if (coneNumber == 1){
+                right((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
+                forward((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
+            }
+            else if (coneNumber == 2){
+                forward((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
 
+            }
+            else if (coneNumber == 3){
+                left((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
+                forward((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
+
+            }
             telemetry.addData("Status", "Running");
             telemetry.update();
 
@@ -73,6 +99,22 @@ public class Auto_Mode extends LinearOpMode {
     private void move (int distance, int direction){
         //rot.=distance/C
         //move(rot.,direction)
+        if (direction == LEFT){
+            left(distance);
+        }
+        else if (direction == RIGHT){
+            right(distance);
+        }
+        else if (direction == FORWARD){
+            forward(distance);
+        }
+        else if (direction == BACKWARDS){
+            backwards(distance);
+        }
+        front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        back_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
     private void pivot_right(int distance){
@@ -95,6 +137,7 @@ public class Auto_Mode extends LinearOpMode {
         front_left.setTargetPosition(distance);
         back_right.setTargetPosition(distance);
         back_left.setTargetPosition(distance);
+
     }
 
     private void right(int distance){
@@ -121,4 +164,10 @@ public class Auto_Mode extends LinearOpMode {
         back_right.setTargetPosition(-distance);
         back_left.setTargetPosition(-distance);
     }
+    private void raiseArm(int junction){
+        lift_motor.setTargetPosition(PowerRangerTeleOp.high_jun);
+        lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        servo1.setPosition(PowerRangerTeleOp.MAX_POSITION);
+    }
+
 }
