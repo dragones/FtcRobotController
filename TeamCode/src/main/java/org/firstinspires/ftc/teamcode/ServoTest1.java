@@ -118,10 +118,9 @@ public class ServoTest1 extends LinearOpMode {
             lift_motor.setPower(0.5 * negative);
             //sets the lift motor to the heights of the junctions
 
-
-
-
             telemetry.addData("Status", "Running");
+            telemetry.addData("lift position", lift_motor.getCurrentPosition());
+            telemetry.addData("is at target", !lift_motor.isBusy());
             telemetry.update();
 
 

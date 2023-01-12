@@ -62,34 +62,33 @@ public class Auto_Mode extends LinearOpMode {
             pivot_left (encoder_tick);
             //drop cone
 
-
-
-
-
             telemetry.addData("Status", "Running");
             telemetry.update();
 
 
         }
     }
+
+    // TODO: code math
     private void move (int distance, int direction){
         //rot.=distance/C
         //move(rot.,direction)
     }
+
     private void pivot_right(int distance){
         front_right.setTargetPosition(distance);
         front_left.setTargetPosition(-distance);
         back_right.setTargetPosition(distance);
         back_left.setTargetPosition(-distance);
-
-
     }
+
     private void pivot_left(int distance){
         front_right.setTargetPosition(-distance);
         front_left.setTargetPosition(distance);
         back_right.setTargetPosition(-distance);
         back_left.setTargetPosition(distance);
     }
+
     private void forward(int distance){
         //loop x # of rotations
         front_right.setTargetPosition(distance);
@@ -97,6 +96,7 @@ public class Auto_Mode extends LinearOpMode {
         back_right.setTargetPosition(distance);
         back_left.setTargetPosition(distance);
     }
+
     private void right(int distance){
         //loop x # of rotations
         front_right.setTargetPosition(-distance);
@@ -104,6 +104,7 @@ public class Auto_Mode extends LinearOpMode {
         back_right.setTargetPosition(distance);
         back_left.setTargetPosition(-distance);
     }
+
     private void left(int distance){
         //loop x # of rotations
         front_right.setTargetPosition(distance);
@@ -112,6 +113,7 @@ public class Auto_Mode extends LinearOpMode {
         back_left.setTargetPosition(distance);
 
     }
+
     private void backwards(int distance){
         //loop x # of rotations
         front_right.setTargetPosition(-distance);
