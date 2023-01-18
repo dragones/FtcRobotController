@@ -85,7 +85,7 @@ public class Auto_Mode extends LinearOpMode {
         back_right = hardwareMap.get(DcMotor.class, "back_right");
         servo1 = hardwareMap.get(Servo.class, "servo1");
         lift_motor = hardwareMap.get(DcMotor.class, "lift_motor");
-        webcam = hardwareMap.get(WebcamName.class, "Webcam1");
+        webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         front_left.setDirection(DcMotor.Direction.REVERSE);
         back_left.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -128,6 +128,9 @@ public class Auto_Mode extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
+            // TODO: scan cone with webcam
+            //scan cone number
             String coneNumber = "";
             if (tfod != null) {
                 // getUpdatedRecognitions() will return null if no new information is available since
@@ -154,9 +157,6 @@ public class Auto_Mode extends LinearOpMode {
                 }
             }
 
-            // TODO: scan cone with webcam
-            //scan cone number
-
             //Move cone to high junction
             forward(2509);
             //turn towards junction
@@ -180,7 +180,8 @@ public class Auto_Mode extends LinearOpMode {
             telemetry.addData("Status", "Running");
             telemetry.update();
 
-            tfod.shutdown();
+            if(tfod != null)
+                tfod.shutdown();
         }
     }
 
