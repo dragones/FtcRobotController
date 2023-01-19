@@ -80,9 +80,17 @@ public class Auto_Mode extends LinearOpMode {
     public void runOpMode() {
         control_Hub = hardwareMap.get(Blinker.class, "Control Hub");
         front_left = hardwareMap.get(DcMotor.class, "front_left");
+        front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         front_right = hardwareMap.get(DcMotor.class, "front_right");
+        front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         back_left = hardwareMap.get(DcMotor.class,"back_left" );
+        back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         back_right = hardwareMap.get(DcMotor.class, "back_right");
+        back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         servo1 = hardwareMap.get(Servo.class, "servo1");
         lift_motor = hardwareMap.get(DcMotor.class, "lift_motor");
         webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
@@ -150,15 +158,22 @@ public class Auto_Mode extends LinearOpMode {
                         telemetry.addData("", " ");
                         telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
                         telemetry.addData("- Position (Row/Col)", "%.0f / %.0f", row, col);
-                        coneNumber = recognition.getLabel();
                         telemetry.addData("- Size (Width/Height)", "%.0f / %.0f", width, height);
+                        coneNumber = recognition.getLabel();
+                        telemetry.addData("codeNumber:",coneNumber);
+                        if(coneNumber != null){
+                            break;
+                        }
                     }
                     telemetry.update();
                 }
             }
 
+            sleep(5000);
+
             //Move cone to high junction
             forward(2509);
+            sleep(3000);
             //turn towards junction
             pivot_left (encoder_tick);
             //drop cone
@@ -231,6 +246,10 @@ public class Auto_Mode extends LinearOpMode {
         front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         back_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        front_right.setPower(0.3);
+        front_left.setPower(0.3);
+        back_right.setPower(0.3);
+        back_left.setPower(0.3);
     }
 
     private void pivot_right(int distance){
@@ -249,6 +268,7 @@ public class Auto_Mode extends LinearOpMode {
 
     private void forward(int distance){
         //loop x # of rotations
+
         front_right.setTargetPosition(distance);
         front_left.setTargetPosition(distance);
         back_right.setTargetPosition(distance);

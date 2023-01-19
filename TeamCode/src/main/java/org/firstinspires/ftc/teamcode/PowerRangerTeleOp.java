@@ -96,9 +96,6 @@ public class PowerRangerTeleOp extends LinearOpMode {
             else if (gamepad1.dpad_down) {
                 lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift_motor.setTargetPosition(lift_motor.getCurrentPosition()+50);
-
-
-
             }
 
             lift_motor.setPower(0.5 );
