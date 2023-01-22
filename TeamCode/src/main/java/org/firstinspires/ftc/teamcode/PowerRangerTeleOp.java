@@ -40,16 +40,15 @@ public class PowerRangerTeleOp extends LinearOpMode {
         front_left.setDirection(DcMotor.Direction.REVERSE);
         back_left.setDirection(DcMotorSimple.Direction.REVERSE);
 
-
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
         // Wait for the game to start (driver presses PLAY)
 
-
+        double servo_position = 0.5;
+        servo1.setPosition (servo_position);
+        telemetry.addData("Status", "Initialized");
+        telemetry.addData("servoPosition> ", servo_position);
+        telemetry.update();
 
         waitForStart();
-
-        double servo_position = .5;
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

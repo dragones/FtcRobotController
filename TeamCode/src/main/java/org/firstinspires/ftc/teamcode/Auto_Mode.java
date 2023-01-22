@@ -99,9 +99,6 @@ public class Auto_Mode extends LinearOpMode {
         back_left.setDirection(DcMotorSimple.Direction.REVERSE);
         double  MIN_POSITION = 0, MAX_POSITION = 1;
 
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
-        // Wait for the game to start (driver presses PLAY)
         int low_jun = 0;
         int med_jun = 0;
         int high_jun = 0;
@@ -125,19 +122,26 @@ public class Auto_Mode extends LinearOpMode {
             tfod.setZoom(1.0, 16.0/9.0);
         }
 
+        double servo_position = .5;
+        // TODO: open servo
+        // TODO: wait
+        // TODO: close servo
+        // TODO: raise arm slightly
+
+        telemetry.addData("Status", "Initialized");
+        telemetry.update();
+
         /** Wait for the game to begin */
+        // Wait for the game to start (driver presses PLAY)
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
 
         waitForStart();
 
-        // TODO: load cone
-        double servo_position = .5;
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
 
-            // TODO: scan cone with webcam
             //scan cone number
             String coneNumber = "";
             if (tfod != null) {
@@ -172,7 +176,18 @@ public class Auto_Mode extends LinearOpMode {
             sleep(5000);
 
             //Move cone to high junction
-            forward(2509);
+            //forward(2509);
+            /*
+            move((int)(100 * TICKSPERCENTIMETER), FORWARD);
+            telemetry.addData("motors", "Running at %7d :%7d : %7d : %7d",
+                    front_left.getCurrentPosition(),
+                    front_right.getCurrentPosition(),
+                    back_left.getCurrentPosition(),
+                    back_right.getCurrentPosition());
+            telemetry.update();
+            */
+
+            /*
             sleep(3000);
             //turn towards junction
             pivot_left (encoder_tick);
@@ -181,19 +196,19 @@ public class Auto_Mode extends LinearOpMode {
             raiseArm(HIGH_JUNCTION);
 
             //move to correct zone
-            if (coneNumber.equals("1")){
+            if (coneNumber.contains("1")){
                 right((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
                 forward((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
             }
-            else if (coneNumber.equals("2")){
+            else if (coneNumber.contains("2")){
                 forward((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
             }
-            else if (coneNumber.equals("3")){
+            else if (coneNumber.contains("3")){
                 left((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
                 forward((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
             }
             telemetry.addData("Status", "Running");
-            telemetry.update();
+             */
 
             if(tfod != null)
                 tfod.shutdown();
