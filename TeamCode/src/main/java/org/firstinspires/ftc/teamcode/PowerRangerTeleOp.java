@@ -18,9 +18,9 @@ public class PowerRangerTeleOp extends LinearOpMode {
     private DcMotor back_right;
     private DcMotor lift_motor;
     private Servo servo1;
-    public static int low_jun = -1200;
-    public static int med_jun = -2400;
-    public static int high_jun = -3600;
+    public static int low_jun = -1300;
+    public static int med_jun = -2600;
+    public static int high_jun = -3800;
     public static double  MIN_POSITION = 0, MAX_POSITION = 1;
 
 
@@ -56,7 +56,7 @@ public class PowerRangerTeleOp extends LinearOpMode {
             double x =  this.gamepad1.left_stick_x;
             double y = - this.gamepad1.left_stick_y;
             double x2 = this.gamepad1.right_stick_x;
-            double cap = 0.35;
+            double cap = 0.45;
 
             // TODO: How to set power so have more fine grained control?
             front_right.setPower((y-x-x2)*cap);
@@ -65,10 +65,10 @@ public class PowerRangerTeleOp extends LinearOpMode {
             back_left.setPower((y-x+x2)*cap);
 
             // move arm down on A button if not already at lowest position.
-            if (gamepad1.right_trigger > 0.3 && servo_position > MIN_POSITION) servo_position -= .001;
+            if (gamepad1.right_trigger > 0.3 && servo_position > MIN_POSITION) servo_position -= .01;
 
             // move arm up on B button if not already at the highest position.
-            if (gamepad1.left_trigger > 0.3 && servo_position < MAX_POSITION) servo_position += .001;
+            if (gamepad1.left_trigger > 0.3 && servo_position < MAX_POSITION) servo_position += .01;
 
             // set the servo position/power values as we have computed them.
             servo1.setPosition(Range.clip(servo_position, MIN_POSITION, MAX_POSITION));
@@ -97,7 +97,7 @@ public class PowerRangerTeleOp extends LinearOpMode {
                 lift_motor.setTargetPosition(lift_motor.getCurrentPosition()+50);
             }
 
-            lift_motor.setPower(0.5 );
+            lift_motor.setPower(0.7);
 
             //sets the lift motor to the heights of the junctions
 

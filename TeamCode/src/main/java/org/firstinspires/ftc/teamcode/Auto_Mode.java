@@ -123,10 +123,21 @@ public class Auto_Mode extends LinearOpMode {
         }
 
         double servo_position = .5;
+        servo1.setPosition(servo_position);
+        telemetry.addData("servo_postion>", servo_position);
+        telemetry.update();
+
         // TODO: open servo
         // TODO: wait
+        sleep(2500);
         // TODO: close servo
+        servo_position = .6;
+        servo1.setPosition(servo_position);
+        telemetry.addData("servo_postion>", servo_position);
+        telemetry.update();
+
         // TODO: raise arm slightly
+        raiseArm(-1,100);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -313,10 +324,15 @@ public class Auto_Mode extends LinearOpMode {
         back_right.setTargetPosition(-distance);
         back_left.setTargetPosition(-distance);
     }
-    private void raiseArm(int junction){
-        lift_motor.setTargetPosition(PowerRangerTeleOp.high_jun);
+    private void raiseArm(int junction, int distance){
+        if (junction != -1){
+            lift_motor.setTargetPosition(PowerRangerTeleOp.high_jun);
+        }
+        else{
+            lift_motor.setTargetPosition(distance);
+        }
         lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        servo1.setPosition(PowerRangerTeleOp.MAX_POSITION);
+        // servo1.setPosition(PowerRangerTeleOp.MAX_POSITION);
     }
 
 }
