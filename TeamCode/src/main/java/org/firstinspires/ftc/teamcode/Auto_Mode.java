@@ -199,14 +199,14 @@ public class Auto_Mode extends LinearOpMode {
 
             // move to correct zone
             if (coneNumber.contains("1")) {
-                move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), RIGHT);
+                move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), LEFT);
                 move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), FORWARD);
             }
             else if (coneNumber.contains("2")) {
                 move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), FORWARD);
             }
             else if (coneNumber.contains("3")) {
-                move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), LEFT);
+                move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), RIGHT);
                 move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), FORWARD);
             }
         }
