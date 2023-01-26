@@ -18,6 +18,8 @@ public class PowerRangerTeleOp extends LinearOpMode {
     private DcMotor back_right;
     private DcMotor lift_motor;
     private Servo servo1;
+    public static int max = -4200;
+    public static int min = 0;
     public static int low_jun = -1300;
     public static int med_jun = -2600;
     public static int high_jun = -3800;
@@ -64,11 +66,9 @@ public class PowerRangerTeleOp extends LinearOpMode {
             back_right.setPower((y+x-x2)*cap);
             back_left.setPower((y-x+x2)*cap);
 
-            // move arm down on A button if not already at lowest position.
-            if (gamepad1.right_trigger > 0.3 && servo_position > MIN_POSITION) servo_position -= .01;
+            if (gamepad1.right_trigger > 0.3 && servo_position > MIN_POSITION) servo_position += .01;
 
-            // move arm up on B button if not already at the highest position.
-            if (gamepad1.left_trigger > 0.3 && servo_position < MAX_POSITION) servo_position += .01;
+            if (gamepad1.left_trigger > 0.3 && servo_position < MAX_POSITION) servo_position -= .01;
 
             // set the servo position/power values as we have computed them.
             servo1.setPosition(Range.clip(servo_position, MIN_POSITION, MAX_POSITION));
@@ -89,15 +89,24 @@ public class PowerRangerTeleOp extends LinearOpMode {
                 lift_motor.setTargetPosition(0);
             }
             if (gamepad1.dpad_up) {
+                int newposition = lift_motor.getCurrentPosition() + 50;
+                if(newposition>max){
+                    newposition = max;
+                }
                 lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                lift_motor.setTargetPosition(lift_motor.getCurrentPosition()-50);
+                lift_motor.setTargetPosition(newposition);
+
             }
             else if (gamepad1.dpad_down) {
+                int newposition = lift_motor.getCurrentPosition()-50;
+                if(newposition<min){
+                    newposition = min;
+                }
                 lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                lift_motor.setTargetPosition(lift_motor.getCurrentPosition()+50);
+                lift_motor.setTargetPosition(newposition);
             }
-
             lift_motor.setPower(0.7);
+
 
             //sets the lift motor to the heights of the junctions
 
