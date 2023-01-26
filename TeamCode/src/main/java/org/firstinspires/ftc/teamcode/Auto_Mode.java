@@ -96,7 +96,7 @@ public class Auto_Mode extends LinearOpMode {
         webcam = hardwareMap.get(WebcamName.class, "Webcam 1");
 
         front_left.setDirection(DcMotor.Direction.REVERSE);
-        back_left.setDirection(DcMotorSimple.Direction.REVERSE);
+        back_left.setDirection(DcMotor.Direction.REVERSE);
         double  MIN_POSITION = 0, MAX_POSITION = 1;
 
         int low_jun = 0;
@@ -122,22 +122,22 @@ public class Auto_Mode extends LinearOpMode {
             tfod.setZoom(1.0, 16.0/9.0);
         }
 
-        double servo_position = .5;
+        // open servo
+        double servo_position = .4;
         servo1.setPosition(servo_position);
         telemetry.addData("servo_postion>", servo_position);
         telemetry.update();
 
-        // TODO: open servo
-        // TODO: wait
+        // wait to load cone
         sleep(2500);
-        // TODO: close servo
+        // close servo
         servo_position = .6;
         servo1.setPosition(servo_position);
         telemetry.addData("servo_postion>", servo_position);
         telemetry.update();
 
-        // TODO: raise arm slightly
-        raiseArm(-1,100);
+        // raise arm slightly
+        // raiseArm(-1,100);
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -152,6 +152,8 @@ public class Auto_Mode extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+            telemetry.addData("Status", "Running");
+            telemetry.update();
 
             //scan cone number
             String coneNumber = "";
@@ -175,8 +177,8 @@ public class Auto_Mode extends LinearOpMode {
                         telemetry.addData("- Position (Row/Col)", "%.0f / %.0f", row, col);
                         telemetry.addData("- Size (Width/Height)", "%.0f / %.0f", width, height);
                         coneNumber = recognition.getLabel();
-                        telemetry.addData("codeNumber:",coneNumber);
-                        if(coneNumber != null){
+                        telemetry.addData("codeNumber:", coneNumber);
+                        if (coneNumber != null) {
                             break;
                         }
                     }
@@ -184,20 +186,8 @@ public class Auto_Mode extends LinearOpMode {
                 }
             }
 
-            sleep(5000);
-
-            //Move cone to high junction
-            //forward(2509);
-            /*
-            move((int)(100 * TICKSPERCENTIMETER), FORWARD);
-            telemetry.addData("motors", "Running at %7d :%7d : %7d : %7d",
-                    front_left.getCurrentPosition(),
-                    front_right.getCurrentPosition(),
-                    back_left.getCurrentPosition(),
-                    back_right.getCurrentPosition());
-            telemetry.update();
-            */
-
+            // sleep(5000);
+            //move((int) (10 * TICKSPERCENTIMETER), FORWARD);
             /*
             sleep(3000);
             //turn towards junction
@@ -205,28 +195,26 @@ public class Auto_Mode extends LinearOpMode {
             //drop cone
             //raise arm to high junction
             raiseArm(HIGH_JUNCTION);
+            */
 
-            //move to correct zone
-            if (coneNumber.contains("1")){
-                right((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
-                forward((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
+            // move to correct zone
+            if (coneNumber.contains("1")) {
+                move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), RIGHT);
+                move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), FORWARD);
             }
-            else if (coneNumber.contains("2")){
-                forward((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
+            else if (coneNumber.contains("2")) {
+                move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), FORWARD);
             }
-            else if (coneNumber.contains("3")){
-                left((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
-                forward((int)(SQUAREWIDTH * TICKSPERCENTIMETER));
+            else if (coneNumber.contains("3")) {
+                move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), LEFT);
+                move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), FORWARD);
             }
-            telemetry.addData("Status", "Running");
-             */
-
-            if(tfod != null)
-                tfod.shutdown();
         }
+
+        if(tfod != null)
+            tfod.shutdown();
     }
 
-    // TODO: code math
     private void initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
@@ -254,8 +242,11 @@ public class Auto_Mode extends LinearOpMode {
         // tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
     }
     private void move (int distance, int direction){
-        //rot.=distance/C
-        //move(rot.,direction)
+        front_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        front_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        back_right.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        back_left.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         if (direction == LEFT){
             left(distance);
         }
@@ -268,14 +259,39 @@ public class Auto_Mode extends LinearOpMode {
         else if (direction == BACKWARDS){
             backwards(distance);
         }
+
         front_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         front_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         back_right.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         back_left.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
         front_right.setPower(0.3);
         front_left.setPower(0.3);
         back_right.setPower(0.3);
         back_left.setPower(0.3);
+
+        while (opModeIsActive() &&
+                //(timeout == -1 || runtime.seconds() < timeout) &&
+                (front_left.isBusy() && front_right.isBusy() && back_left.isBusy() && back_right.isBusy())) {
+
+            // Display it for the driver.
+            //telemetry.addData("Path1", "Running to %7d : %7d : %7d : %7d",
+            //        newLeft1Target, newLeft2Target, newRight1Target, newRight2Target);
+            telemetry.addData("motors", "Running at %7d :%7d : %7d : %7d",
+                    front_left.getCurrentPosition(),
+                    front_right.getCurrentPosition(),
+                    back_left.getCurrentPosition(),
+                    back_right.getCurrentPosition());
+            telemetry.update();
+        }
+
+        front_right.setPower(0.0);
+        front_left.setPower(0.0);
+        back_right.setPower(0.0);
+        back_left.setPower(0.0);
+
+        // pause between moves
+        sleep(250);
     }
 
     private void pivot_right(int distance){
@@ -293,8 +309,6 @@ public class Auto_Mode extends LinearOpMode {
     }
 
     private void forward(int distance){
-        //loop x # of rotations
-
         front_right.setTargetPosition(distance);
         front_left.setTargetPosition(distance);
         back_right.setTargetPosition(distance);
@@ -302,7 +316,6 @@ public class Auto_Mode extends LinearOpMode {
     }
 
     private void right(int distance){
-        //loop x # of rotations
         front_right.setTargetPosition(-distance);
         front_left.setTargetPosition(distance);
         back_right.setTargetPosition(distance);
@@ -310,7 +323,6 @@ public class Auto_Mode extends LinearOpMode {
     }
 
     private void left(int distance){
-        //loop x # of rotations
         front_right.setTargetPosition(distance);
         front_left.setTargetPosition(-distance);
         back_right.setTargetPosition(-distance);
@@ -318,12 +330,12 @@ public class Auto_Mode extends LinearOpMode {
     }
 
     private void backwards(int distance){
-        //loop x # of rotations
         front_right.setTargetPosition(-distance);
         front_left.setTargetPosition(-distance);
         back_right.setTargetPosition(-distance);
         back_left.setTargetPosition(-distance);
     }
+
     private void raiseArm(int junction, int distance){
         if (junction != -1){
             lift_motor.setTargetPosition(PowerRangerTeleOp.high_jun);
