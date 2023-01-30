@@ -36,9 +36,6 @@ public class PowerRangerTeleOp extends LinearOpMode {
         servo1 = hardwareMap.get(Servo.class, "servo1");
         lift_motor = hardwareMap.get(DcMotor.class, "lift_motor");
 
-
-
-
         front_left.setDirection(DcMotor.Direction.REVERSE);
         back_left.setDirection(DcMotorSimple.Direction.REVERSE);
 
@@ -89,8 +86,8 @@ public class PowerRangerTeleOp extends LinearOpMode {
                 lift_motor.setTargetPosition(0);
             }
             if (gamepad1.dpad_up) {
-                int newposition = lift_motor.getCurrentPosition() + 50;
-                if(newposition>max){
+                int newposition = lift_motor.getCurrentPosition() - 50;
+                if(newposition < max){
                     newposition = max;
                 }
                 lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -98,8 +95,8 @@ public class PowerRangerTeleOp extends LinearOpMode {
 
             }
             else if (gamepad1.dpad_down) {
-                int newposition = lift_motor.getCurrentPosition()-50;
-                if(newposition<min){
+                int newposition = lift_motor.getCurrentPosition() + 50;
+                if(newposition > min){
                     newposition = min;
                 }
                 lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
