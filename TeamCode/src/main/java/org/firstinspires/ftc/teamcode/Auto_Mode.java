@@ -123,6 +123,9 @@ public class Auto_Mode extends LinearOpMode {
         }
 
         // open servo
+        double servo_position = 0;
+        servo1.setPosition(servo_position);
+       /*
         double servo_position = .4;
         servo1.setPosition(servo_position);
         telemetry.addData("servo_postion>", servo_position);
@@ -135,6 +138,7 @@ public class Auto_Mode extends LinearOpMode {
         servo1.setPosition(servo_position);
         telemetry.addData("servo_postion>", servo_position);
         telemetry.update();
+        */
 
         // raise arm slightly
         // raiseArm(-1,100);
@@ -199,14 +203,14 @@ public class Auto_Mode extends LinearOpMode {
 
             // move to correct zone
             if (coneNumber.contains("1")) {
-                move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), LEFT);
+                move((int)(1.1*SQUAREWIDTH * TICKSPERCENTIMETER), LEFT);
                 move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), FORWARD);
             }
             else if (coneNumber.contains("2")) {
                 move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), FORWARD);
             }
             else if (coneNumber.contains("3")) {
-                move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), RIGHT);
+                move((int)(1.1*SQUAREWIDTH * TICKSPERCENTIMETER), RIGHT);
                 move((int)(SQUAREWIDTH * TICKSPERCENTIMETER), FORWARD);
             }
         }

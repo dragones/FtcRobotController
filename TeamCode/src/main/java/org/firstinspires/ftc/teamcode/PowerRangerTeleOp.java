@@ -22,7 +22,7 @@ public class PowerRangerTeleOp extends LinearOpMode {
     public static int min = 0;
     public static int low_jun = -1300;
     public static int med_jun = -2600;
-    public static int high_jun = -3800;
+    public static int high_jun = -4000;
     public static double  MIN_POSITION = 0, MAX_POSITION = 1;
 
 
