@@ -23,7 +23,7 @@ public class PowerRangerTeleOp extends LinearOpMode {
     public static int low_jun = -1300;
     public static int med_jun = -2600;
     public static int high_jun = -4000;
-    public static double  MIN_POSITION = 0, MAX_POSITION = 1;
+    public static double  MIN_POSITION = 0.3, MAX_POSITION = 0.7;
 
 
     @Override
@@ -63,12 +63,15 @@ public class PowerRangerTeleOp extends LinearOpMode {
             back_right.setPower((y+x-x2)*cap);
             back_left.setPower((y-x+x2)*cap);
 
-            if (gamepad1.right_trigger > 0.3 && servo_position > MIN_POSITION) servo_position += .01;
+            if (gamepad1.right_trigger > 0.3 && servo_position < MAX_POSITION) servo_position += .01;
 
-            if (gamepad1.left_trigger > 0.3 && servo_position < MAX_POSITION) servo_position -= .01;
+            if (gamepad1.left_trigger > 0.3 && servo_position > MIN_POSITION) servo_position -= .01;
 
             // set the servo position/power values as we have computed them.
-            servo1.setPosition(Range.clip(servo_position, MIN_POSITION, MAX_POSITION));
+            servo_position = Range.clip(servo_position, MIN_POSITION, MAX_POSITION);
+
+            servo1.setPosition(servo_position);
+
             if (gamepad1.a) {
                 lift_motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 lift_motor.setTargetPosition(low_jun);
@@ -108,6 +111,7 @@ public class PowerRangerTeleOp extends LinearOpMode {
             //sets the lift motor to the heights of the junctions
 
             telemetry.addData("Status", "Running");
+            telemetry.addData("servo position", servo_position);
             telemetry.addData("lift position", lift_motor.getCurrentPosition());
             telemetry.addData("is at target", !lift_motor.isBusy());
             telemetry.update();
